@@ -1,0 +1,31 @@
+language: go
+
+go:
+  - 1.7
+  - master
+
+env:
+  matrix:
+    - APP=waffle-server 
+      CMD_INSTALL="make install" 
+      CMD_LINT="make lint" 
+      CMD_BUILD="make build-all" 
+      CMD_TEST="make test" 
+#   - APP=waffle-client
+
+cache:
+  directories:
+    - waffle-server/vendor
+
+install:
+  - cd ${APP}
+  - ${CMD_INSTALL}
+
+before_script:
+  - ${CMD_LINT}
+  - ${CMD_TEST}
+
+script:
+  - ${CMD_BUILD}
+
+# after_script:

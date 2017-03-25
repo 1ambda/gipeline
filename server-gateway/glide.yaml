@@ -1,0 +1,21 @@
+package: github.com/a-trium/gipeline/server-gateway
+import:
+- package: github.com/go-kit/kit
+  version: ~0.3.0
+- package: github.com/pkg/errors
+  version: ~0.8.0
+- package: github.com/alexflint/go-arg
+- package: golang.org/x/net
+  subpackages:
+  - context
+- package: github.com/go-logfmt/logfmt
+  version: ~0.3.0
+- package: github.com/gorilla/mux
+  version: ~1.1.0
+- package: github.com/gorilla/context
+  version: ~1.1.0
+testImport:
+- package: github.com/onsi/ginkgo
+  version: ~1.2.0
+- package: github.com/onsi/gomega
+  version: ~1.0.0
