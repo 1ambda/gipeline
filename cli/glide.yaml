@@ -1,0 +1,4 @@
+package: github.com/a-trium/gipeline/cli
+import:
+- package: github.com/Shopify/sarama
+  version: ~1.11.0
