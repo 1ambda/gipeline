@@ -11,6 +11,7 @@ import (
 
 	"github.com/go-kit/kit/log"
 	"golang.org/x/net/context"
+	"github.com/a-trium/gipeline/server-gateway/service/country"
 )
 
 func main() {
@@ -36,12 +37,14 @@ func main() {
 	// Start
 	ctx := context.Background()
 	numRepo := number.NewNumberRepository()
+	countryRepo := country.NewCountryRepository()
 
 	r := mux.NewRouter().StrictSlash(true)
 	apiRoute := r.PathPrefix("/api/v1").Subrouter().StrictSlash(true)
 
 	service.RegisterNumberRouter(ctx, numRepo, apiRoute)
 	service.RegisterUserRouter(ctx, numRepo, apiRoute)
+	service.RegisterCountryRouter(ctx, countryRepo, apiRoute)
 
 	// TODO: graceful shutdown
 	// TODO: accessControl

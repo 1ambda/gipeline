@@ -19,7 +19,7 @@ type Environment struct {
 func GetEnvironment() Environment {
 	// Setup default values
 	RawEnv.Mode = "LOCAL" // [LOCAL, DEV, PROD]
-	RawEnv.Port = "10001"
+	RawEnv.Port = "8080"
 	arg.MustParse(&RawEnv)
 
 	return Environment{
