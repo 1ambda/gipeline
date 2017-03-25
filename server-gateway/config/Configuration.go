@@ -9,22 +9,26 @@ import (
 var RawEnv struct {
 	Mode string `arg:"env"`
 	Port string `arg:"env"`
+	Brokers string `arg:"env"`
 }
 
 type Environment struct {
 	Mode string
 	Port string
+	Brokers string
 }
 
 func GetEnvironment() Environment {
 	// Setup default values
 	RawEnv.Mode = "LOCAL" // [LOCAL, DEV, PROD]
 	RawEnv.Port = "10001"
+	RawEnv.Brokers = "localhost:9092"
 	arg.MustParse(&RawEnv)
 
 	return Environment{
 		Mode: RawEnv.Mode,
 		Port: ":" + RawEnv.Port,
+		Brokers: RawEnv.Brokers,
 	}
 }
 

@@ -3,10 +3,12 @@ package kafka
 import (
 	"github.com/Shopify/sarama"
 	"github.com/go-kit/kit/log"
+	"strings"
 )
 
-func NewKafkaProducer(logger log.Logger) sarama.SyncProducer {
-	brokers := []string{"172.20.10.7:9092"}
+func NewKafkaProducer(logger log.Logger, brokers string) sarama.SyncProducer {
+	logger.Log("brokers", brokers)
+	brokerList := strings.Split(brokers, ",")
 
 	kConf := sarama.NewConfig()
 	kConf.Producer.Partitioner = sarama.NewRandomPartitioner
@@ -14,7 +16,7 @@ func NewKafkaProducer(logger log.Logger) sarama.SyncProducer {
 	kConf.Producer.Retry.Max = 5
 	kConf.Producer.Return.Successes = true
 
-	producer, err := sarama.NewSyncProducer(brokers, kConf)
+	producer, err := sarama.NewSyncProducer(brokerList, kConf)
 
 	if err != nil {
 		panic(err)

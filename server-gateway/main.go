@@ -38,18 +38,12 @@ func main() {
 	ctx := context.Background()
 	countryRepo := country.NewCountryRepository()
 
-	kProducer := kafka.NewKafkaProducer(logger)
+	kProducer := kafka.NewKafkaProducer(logger, env.Brokers)
 
 	r := mux.NewRouter().StrictSlash(true)
 	apiRoute := r.PathPrefix("/api/v1").Subrouter().StrictSlash(true)
 
 	service.RegisterCountryRouter(ctx, kProducer, countryRepo, apiRoute)
-
-	// TODO: graceful shutdown
-	// TODO: accessControl
-	// TODO: /metrics
-	// TODO: globall logging
-	// TODO: Number type: int64
 
 	http.Handle("/", r)
 
@@ -60,4 +54,11 @@ func main() {
 	}()
 
 	logger.Log("error", http.ListenAndServe(env.Port, nil))
+
+	// TODO: graceful shutdown
+	// TODO: accessControl
+	// TODO: /metrics
+	// TODO: globall logging
+	// TODO: Number type: int64
+
 }
