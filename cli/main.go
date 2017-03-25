@@ -219,7 +219,6 @@ type VisitResponse struct {
 }
 
 func main() {
-
 	rand.Seed(42)
 
 	for {

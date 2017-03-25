@@ -11,6 +11,7 @@ import (
 	"github.com/go-kit/kit/log"
 	"golang.org/x/net/context"
 	"github.com/a-trium/gipeline/server-gateway/service/country"
+	"github.com/a-trium/gipeline/server-gateway/kafka"
 )
 
 func main() {
@@ -37,10 +38,12 @@ func main() {
 	ctx := context.Background()
 	countryRepo := country.NewCountryRepository()
 
+	kProducer := kafka.NewKafkaProducer(logger)
+
 	r := mux.NewRouter().StrictSlash(true)
 	apiRoute := r.PathPrefix("/api/v1").Subrouter().StrictSlash(true)
 
-	service.RegisterCountryRouter(ctx, countryRepo, apiRoute)
+	service.RegisterCountryRouter(ctx, kProducer, countryRepo, apiRoute)
 
 	// TODO: graceful shutdown
 	// TODO: accessControl
@@ -49,5 +52,12 @@ func main() {
 	// TODO: Number type: int64
 
 	http.Handle("/", r)
+
+	defer func() {
+		// Close all resources
+		logger.Log("message", "Close all resources")
+		kafka.DeleteKafkaProduce(logger, kProducer)
+	}()
+
 	logger.Log("error", http.ListenAndServe(env.Port, nil))
 }

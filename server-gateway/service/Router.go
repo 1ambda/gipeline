@@ -5,13 +5,14 @@ import (
 	"github.com/gorilla/mux"
 
 	"golang.org/x/net/context"
+	"github.com/Shopify/sarama"
 )
 
-func RegisterCountryRouter(ctx context.Context, repo country.CountryRepository,
+func RegisterCountryRouter(ctx context.Context, kProducer sarama.SyncProducer, repo country.CountryRepository,
 apiRoute *mux.Router) {
 	svc := country.NewCountryService(repo)
 	route := apiRoute.PathPrefix("/country").Subrouter()
 
-	visitHandler := country.NewCountryVisitHandler(ctx, svc)
+	visitHandler := country.NewCountryVisitHandler(ctx, kProducer, svc)
 	route.Handle("/visit", visitHandler).Methods("POST")
 }

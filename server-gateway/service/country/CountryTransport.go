@@ -8,6 +8,7 @@ import (
 
 	httptransport "github.com/go-kit/kit/transport/http"
 	"golang.org/x/net/context"
+	"github.com/Shopify/sarama"
 )
 
 func DecodeCountryVisitRequest(_ context.Context, r *http.Request) (interface{}, error) {
@@ -20,10 +21,10 @@ func DecodeCountryVisitRequest(_ context.Context, r *http.Request) (interface{},
 	return req, nil
 }
 
-func NewCountryVisitHandler(ctx context.Context, svc CountryService) http.Handler {
+func NewCountryVisitHandler(ctx context.Context, kProducer sarama.SyncProducer, svc CountryService) http.Handler {
 	return httptransport.NewServer(
 		ctx,
-		NewCountryVisitEndpoint(svc),
+		NewCountryVisitEndpoint(svc, kProducer),
 		DecodeCountryVisitRequest,
 		common.EncodeResponse,
 	)
