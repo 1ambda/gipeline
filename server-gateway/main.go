@@ -6,7 +6,6 @@ import (
 
 	"github.com/a-trium/gipeline/server-gateway/config"
 	"github.com/a-trium/gipeline/server-gateway/service"
-	"github.com/a-trium/gipeline/server-gateway/service/number"
 	"github.com/gorilla/mux"
 
 	"github.com/go-kit/kit/log"
@@ -36,14 +35,11 @@ func main() {
 
 	// Start
 	ctx := context.Background()
-	numRepo := number.NewNumberRepository()
 	countryRepo := country.NewCountryRepository()
 
 	r := mux.NewRouter().StrictSlash(true)
 	apiRoute := r.PathPrefix("/api/v1").Subrouter().StrictSlash(true)
 
-	service.RegisterNumberRouter(ctx, numRepo, apiRoute)
-	service.RegisterUserRouter(ctx, numRepo, apiRoute)
 	service.RegisterCountryRouter(ctx, countryRepo, apiRoute)
 
 	// TODO: graceful shutdown
