@@ -5,9 +5,11 @@ import (
 	"github.com/go-kit/kit/endpoint"
 	"golang.org/x/net/context"
 	"github.com/Shopify/sarama"
+	"github.com/go-kit/kit/log"
+	"fmt"
 )
 
-func NewCountryVisitEndpoint(svc CountryService, kProducer sarama.SyncProducer) endpoint.Endpoint {
+func NewCountryVisitEndpoint(svc CountryService, logger log.Logger, kProducer sarama.SyncProducer) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (interface{}, error) {
 		req := request.(VisitRequest)
 
@@ -15,11 +17,12 @@ func NewCountryVisitEndpoint(svc CountryService, kProducer sarama.SyncProducer) 
 
 		// 1. send message to kafka
 		_, _, kErr := kProducer.SendMessage(&sarama.ProducerMessage{
-			Topic: "test",
-			Value: sarama.StringEncoder(req.Country),
+			Topic: "country",
+			Value: sarama.StringEncoder(fmt.Sprintf("{\"country\": %s}", req.Country)),
 		})
 
 		if kErr != nil {
+			logger.Log("error", kErr)
 			return nil, kErr
 		}
 

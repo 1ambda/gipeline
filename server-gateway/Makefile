@@ -9,7 +9,7 @@ ifeq ($(GOOS),)
   endif
 endif
 
-APP			= GipelineGateway 
+APP			= Gateway
 MAIN		= main.go
 DIST_DIR	= dist
 VENDOR_DIR	= vendor
@@ -75,6 +75,7 @@ run-cont: build
 clean:
 	find . -type f -name '*.coverprofile' -exec rm {} +
 	$(RM) ${DIST_DIR}
+	$(RM) vendor/$(IMPORTPATH)
 
 fclean: clean
 	$(RM) vendor

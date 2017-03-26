@@ -1,8 +1,8 @@
-hash: fdccea6179db82ddfc66a7a6640124811d80b330e02285ebafc29565751dcc46
-updated: 2017-03-25T17:09:37.224502444+09:00
+hash: 64fe102b4821e80fc00daf5287309b032af41a3484f3102cb124f00d5b6dd446
+updated: 2017-03-25T20:41:37.117891213+09:00
 imports:
 - name: github.com/a-trium/gipeline
-  version: bf7b7520f1e7e1541e6b87219fb95b9d2b18fb4c
+  version: 663daae2df2c9957ddc0e42f9da4b8586a060560
   subpackages:
   - server-gateway/config
   - server-gateway/kafka

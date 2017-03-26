@@ -1,0 +1,13 @@
+version: '2'
+services:
+  kafka:
+    environment:
+      KAFKA_ADVERTISED_HOST_NAME: kafka
+  gateway:
+    build: ./server-gateway
+    environment:
+      BROKERS: kafka:9092
+    links:
+      - kafka
+    ports:
+      - "10001:10001"

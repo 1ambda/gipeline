@@ -20,7 +20,7 @@ func main() {
 	env := config.GetEnvironment()
 
 	var logger log.Logger
-	logger = log.NewLogfmtLogger(log.NewSyncWriter(os.Stderr))
+	logger = log.NewLogfmtLogger(log.NewSyncWriter(os.Stdout))
 	logger = log.NewContext(logger).With(
 		"ts", log.DefaultTimestampUTC, "caller", log.DefaultCaller,
 	)
@@ -43,7 +43,7 @@ func main() {
 	r := mux.NewRouter().StrictSlash(true)
 	apiRoute := r.PathPrefix("/api/v1").Subrouter().StrictSlash(true)
 
-	service.RegisterCountryRouter(ctx, kProducer, countryRepo, apiRoute)
+	service.RegisterCountryRouter(ctx, logger, kProducer, countryRepo, apiRoute)
 
 	http.Handle("/", r)
 

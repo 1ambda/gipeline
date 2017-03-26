@@ -4,6 +4,7 @@ import (
 	"github.com/Shopify/sarama"
 	"github.com/go-kit/kit/log"
 	"strings"
+	"time"
 )
 
 func NewKafkaProducer(logger log.Logger, brokers string) sarama.SyncProducer {
@@ -16,7 +17,21 @@ func NewKafkaProducer(logger log.Logger, brokers string) sarama.SyncProducer {
 	kConf.Producer.Retry.Max = 5
 	kConf.Producer.Return.Successes = true
 
-	producer, err := sarama.NewSyncProducer(brokerList, kConf)
+	connected := false
+
+	var err error = nil
+	var producer sarama.SyncProducer
+
+	for !connected {
+		time.Sleep(5000 * time.Millisecond)
+		producer, err = sarama.NewSyncProducer(brokerList, kConf)
+
+		if err == nil {
+			connected = true
+		} else {
+			logger.Log("message", "Failed to connect brokers. Retrying...")
+		}
+	}
 
 	if err != nil {
 		panic(err)
