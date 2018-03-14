@@ -43,7 +43,7 @@ lint:
 install:
 	$(GOGET) github.com/Masterminds/glide # for dep
 	$(GOGET) github.com/onsi/ginkgo/ginkgo # for test
-	$(GOGET) github.com/franciscocpg/gox # for cross compile
+	$(GOGET) github.com/mitchellh/gox # for cross compile
 	$(GOGET) github.com/githubnemo/CompileDaemon # for reload
 	$(GOGET) github.com/alecthomas/gometalinter # for lint
 	gometalinter --install --update --force
